@@ -27,10 +27,15 @@ def process_file():
     if current_page:
         pages.append({'page': page_num, 'text': current_page})
 
+    # For Elasticsearch Bulk API
+    # with open("./build/human-condition.json", "w") as f:
+    #     for p in pages:
+    #         f.write(json.dumps({"index":{"_id":"%s" % p['page']}}) + "\n")
+    #         f.write(json.dumps(p) + "\n")
+
+    # For JSON
     with open("./build/human-condition.json", "w") as f:
-        for p in pages:
-            f.write(json.dumps({"index":{"_id":"%s" % p['page']}}) + "\n")
-            f.write(json.dumps(p) + "\n")
+        json.dump(pages, f)
 
 if __name__ == "__main__":
     process_file()
