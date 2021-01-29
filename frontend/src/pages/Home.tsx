@@ -12,6 +12,7 @@ export default () => {
   const [results, setResults] = useState<SearchResult[]>([])
   const [selected, setSelected] = useState<SearchResult | undefined>(undefined)
   const [modalShown, setModalShown] = useState<boolean>(false)
+  const [hasSearched, setHasSearched] = useState<boolean>(false)
 
   const options = {
     shouldSort: false,
@@ -32,7 +33,7 @@ export default () => {
 
   const handleSubmit = () => {
     const finalQuery = query.trim().split(" ").map(s => `'${s}`).join(" ")
-    console.log(finalQuery)
+    if (!hasSearched) setHasSearched(true)
     setResults(fuse.search<"">(finalQuery))
   }
 
@@ -70,7 +71,7 @@ export default () => {
       {/** Body **/}
 
       <Pane display="flex" flexDirection="column" alignItems="center">
-        {results.length > 0 && <Pane width={majorScale(64)} display="flex" justifyContent="flex-end">
+        {hasSearched && <Pane width={majorScale(64)} display="flex" justifyContent="flex-end">
           Results: {results.length}
         </Pane>
         }
