@@ -1,0 +1,3 @@
+#!/bin/bash
+
+aws s3 sync --exclude "venv/*" --exclude ".git/*" --exclude ".gitignore" --exclude "*~" --exclude "deploy-to-s3" ./frontend/build/ s3://arendtindex.com/

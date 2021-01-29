@@ -19,6 +19,7 @@ export default () => {
     keys: ['text']
   }
   const fuse = new Fuse(Data, options)
+  const queries = query.trim().split(" ")
 
   useEffect(() => {
     if (selected === undefined) return
@@ -30,7 +31,9 @@ export default () => {
    * }, []) */
 
   const handleSubmit = () => {
-    setResults(fuse.search<"">(`'${query}`))
+    const finalQuery = query.trim().split(" ").map(s => `'${s}`).join(" ")
+    console.log(finalQuery)
+    setResults(fuse.search<"">(finalQuery))
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +77,7 @@ export default () => {
         {results.map((r, i) => (
           <Pane elevation={0} hoverElevation={1} width={majorScale(64)} margin={majorScale(2)} key={`${r.refIndex}${i}`} onClick={() => setSelected(r)} className="Clickable">
             <Pane padding={majorScale(2)}>
-              <Highlighter searchWords={[query]} textToHighlight={r.item} />
+              <Highlighter searchWords={queries} textToHighlight={r.item} />
             </Pane>
           </Pane>
         ))}
