@@ -28,14 +28,15 @@ export default () => {
     setModalShown(true)
   }, [selected])
 
-  /* useEffect(() => {
-   *   setResults(fuse.search<Reference>("'freedom"))
-   * }, []) */
-
   const handleSubmit = () => {
     const finalQuery = query.trim().split(" ").map(s => `'${s}`).join(" ")
     if (!hasSearched) setHasSearched(true)
     setResults(fuse.search<"">(finalQuery))
+  }
+
+  const onDialogClose = () => {
+    setSelected(undefined)
+    setModalShown(false)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +54,7 @@ export default () => {
 
   return (
     <Pane display="flex" flexDirection="column">
-      <Dialog hasFooter={false} hasHeader={false} isShown={modalShown} onCloseComplete={() => setModalShown(false)}>
+      <Dialog hasFooter={false} hasHeader={false} isShown={modalShown} onCloseComplete={onDialogClose}>
         {selected &&
           <Highlighter searchWords={[selected.item]} textToHighlight={selectedText} />}
       </Dialog>
@@ -92,6 +93,6 @@ export default () => {
           </Pane>
         ))}
       </Pane>
-    </Pane>
+    </Pane >
   )
 }
