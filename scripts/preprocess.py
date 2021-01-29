@@ -14,8 +14,10 @@ def process_file():
 
         full_text += " " + line
 
+    full_text = full_text.replace("- ", "")
 
-    sentences = full_text.split(".")
+
+    sentences = ["%s." % s for s in full_text.split(".")]
     # For JSON
     with open("./build/human-condition.json", "w") as f:
         json.dump(sentences, f)

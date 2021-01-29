@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Pane, SearchInput, Heading, majorScale, Button, Dialog } from 'evergreen-ui'
+import { Pane, SearchInput, Heading, majorScale, Button, Dialog, Paragraph } from 'evergreen-ui'
 import Data from "../data/human-condition.json"
 import Highlighter from "react-highlight-words";
 import Fuse from "fuse.js"
 import "./Home.css"
+import HannahArendtImage from "../static/hannah-arendt.jpg"
 
 type SearchResult = Fuse.FuseResult<"">
 
@@ -58,9 +59,17 @@ export default () => {
       </Dialog>
 
       {/** Header **/}
-      <Pane height="300px" display="flex" background="gray" marginBottom={majorScale(2)}>
-        <Pane margin="auto" display="flex" flexDirection="column" minWidth="500px" alignItems="center">
-          <Heading size={900} padding={majorScale(3)}>Hannah Arendt Index</Heading>
+      <Pane height="300px" display="flex" background="#CCC" marginBottom={majorScale(2)}>
+        <Pane margin="auto" display="flex" flexDirection="column" width="500px" alignItems="center">
+          <Pane border display="flex" marginBottom={majorScale(3)}>
+            <Pane>
+              <img width={"100px"} src={HannahArendtImage} />
+            </Pane>
+            <Pane marginLeft={majorScale(2)} display="flex" flexDirection={"column"}>
+              <Heading margin={0} padding={0} size={900}>Hannah Arendt Index</Heading>
+              <Paragraph>This tool allows you to search the entire work of Hannah Arendt's "The Human Condition". Use whitespace for multi-keyword searches.</Paragraph>
+            </Pane>
+          </Pane>
           <Pane display="flex" alignItems="center">
             <SearchInput onKeyDown={handleKeyDown} height={40} placeholder="Search" onChange={handleChange} value={query} />
             <Button onClick={handleSubmit} height={40} marginLeft={majorScale(1)}>Search</Button>
@@ -72,7 +81,7 @@ export default () => {
 
       <Pane display="flex" flexDirection="column" alignItems="center">
         {hasSearched && <Pane width={majorScale(64)} display="flex" justifyContent="flex-end">
-          Results: {results.length}
+          Number of Results: {results.length}
         </Pane>
         }
         {results.map((r, i) => (
