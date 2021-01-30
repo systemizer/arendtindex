@@ -36,11 +36,11 @@ export default () => {
   }, [selected])
 
   const handleSubmit = () => {
-    if (!hasSearched) setHasSearched(true)
     doSearch(query)
   }
 
   const doSearch = (q: string) => {
+    if (!hasSearched) setHasSearched(true)
     const finalQuery = q.trim().split(" ").map(s => `'" ${s} "`).join(" ")
     setResults(fuse.search<Reference>(finalQuery))
   }
