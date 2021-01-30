@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Pane, SearchInput, Heading, majorScale, Button, Dialog, Paragraph, Text } from 'evergreen-ui'
+import { Pane, SearchInput, Heading, majorScale, Button, Dialog, Paragraph, Text, Link } from 'evergreen-ui'
 import Data from "../data/human-condition.json"
 import Highlighter from "react-highlight-words";
 import Fuse from "fuse.js"
@@ -36,8 +36,12 @@ export default () => {
   }, [selected])
 
   const handleSubmit = () => {
-    const finalQuery = query.trim().split(" ").map(s => `'" ${s} "`).join(" ")
     if (!hasSearched) setHasSearched(true)
+    doSearch(query)
+  }
+
+  const doSearch = (q: string) => {
+    const finalQuery = q.trim().split(" ").map(s => `'" ${s} "`).join(" ")
     setResults(fuse.search<Reference>(finalQuery))
   }
 
@@ -48,6 +52,11 @@ export default () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
+  }
+
+  const handleSearchQuery = (q: string) => {
+    setQuery(q)
+    doSearch(q)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -69,7 +78,7 @@ export default () => {
       {/** Header **/}
       <Pane height="300px" display="flex" background="#CCC" marginBottom={majorScale(2)}>
         <Pane margin="auto" display="flex" flexDirection="column" width="500px" alignItems="center">
-          <Pane border display="flex" marginBottom={majorScale(3)}>
+          <Pane border display="flex" marginBottom={majorScale(2)}>
             <Pane>
               <img width={"100px"} src={HannahArendtImage} />
             </Pane>
@@ -78,9 +87,16 @@ export default () => {
               <Paragraph marginTop={majorScale(1)}>This tool allows you to search the entire work of Hannah Arendt's "The Human Condition". Use whitespace for multi-keyword searches.</Paragraph>
             </Pane>
           </Pane>
-          <Pane display="flex" alignItems="center">
+
+          <Pane display="flex" alignItems="center" marginBottom={majorScale(2)}>
             <SearchInput onKeyDown={handleKeyDown} height={40} placeholder="Search" onChange={handleChange} value={query} />
             <Button onClick={handleSubmit} height={40} marginLeft={majorScale(1)}>Search</Button>
+          </Pane>
+          <Pane>
+            <Text>Suggested Searches: </Text>
+            <Link className="Clickable" marginRight={majorScale(1)} onClick={() => handleSearchQuery("human condition")}>human condition</Link>
+            <Link className="Clickable" marginRight={majorScale(1)} onClick={() => handleSearchQuery("vita activa")}>vita activa</Link>
+            <Link className="Clickable" marginRight={majorScale(1)} onClick={() => handleSearchQuery("labor")}>labor</Link>
           </Pane>
         </Pane>
       </Pane>
@@ -89,7 +105,7 @@ export default () => {
 
       <Pane display="flex" flexDirection="column" alignItems="center">
         {!hasSearched && <Pane>
-          <Heading size={600} padding={majorScale(3)}>Use the above search to query Hannah Arendt's The Human Condition</Heading>
+          <Heading size={600} padding={majorScale(3)}>Use the above search to query Hannah Arendt's <i>The Human Condition</i></Heading>
         </Pane>
         }
         {hasSearched && results.length === 0 && <Pane>
