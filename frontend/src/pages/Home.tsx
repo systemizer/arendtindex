@@ -49,7 +49,7 @@ export default () => {
 
   let selectedText = ""
   if (selected) {
-    selectedText = Data.slice(selected.refIndex - 2, selected.refIndex + 2).join(". ")
+    selectedText = Data.slice(selected.refIndex - 2, selected.refIndex + 2).join("")
   }
 
   return (
