@@ -36,7 +36,7 @@ export default () => {
   }, [selected])
 
   const handleSubmit = () => {
-    const finalQuery = query.trim().split(" ").map(s => `'${s}`).join(" ")
+    const finalQuery = query.trim().split(" ").map(s => `'" ${s} "`).join(" ")
     if (!hasSearched) setHasSearched(true)
     setResults(fuse.search<Reference>(finalQuery))
   }
@@ -73,9 +73,9 @@ export default () => {
             <Pane>
               <img width={"100px"} src={HannahArendtImage} />
             </Pane>
-            <Pane marginLeft={majorScale(2)} display="flex" flexDirection={"column"}>
+            <Pane marginLeft={majorScale(2)} display="flex" flexDirection={"column"} justifyContent="center">
               <Heading margin={0} padding={0} size={900}>Hannah Arendt Index</Heading>
-              <Paragraph>This tool allows you to search the entire work of Hannah Arendt's "The Human Condition". Use whitespace for multi-keyword searches.</Paragraph>
+              <Paragraph marginTop={majorScale(1)}>This tool allows you to search the entire work of Hannah Arendt's "The Human Condition". Use whitespace for multi-keyword searches.</Paragraph>
             </Pane>
           </Pane>
           <Pane display="flex" alignItems="center">
