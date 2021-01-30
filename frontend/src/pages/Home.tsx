@@ -88,7 +88,15 @@ export default () => {
       {/** Body **/}
 
       <Pane display="flex" flexDirection="column" alignItems="center">
-        {hasSearched && <Pane width={majorScale(64)} display="flex" justifyContent="flex-end">
+        {!hasSearched && <Pane>
+          <Heading size={600} padding={majorScale(3)}>Use the above search to query Hannah Arendt's The Human Condition</Heading>
+        </Pane>
+        }
+        {hasSearched && results.length === 0 && <Pane>
+          <Heading size={600} padding={majorScale(3)}>No Results Found</Heading>
+        </Pane>
+        }
+        {hasSearched && results.length > 0 && <Pane width={majorScale(64)} display="flex" justifyContent="flex-end">
           Number of Results: {results.length}
         </Pane>
         }
