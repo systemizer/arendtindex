@@ -69,22 +69,27 @@ export default () => {
   }
 
   return (
-    <Pane display="flex" flexDirection="column">
+    <Pane display="flex" flexDirection="column" background="#FCFCFC" height="100%">
       <Dialog hasFooter={false} hasHeader={false} isShown={modalShown} onCloseComplete={onDialogClose}>
         {selected &&
           <Highlighter searchWords={[selected.item.text]} textToHighlight={selectedText} />}
       </Dialog>
 
+      {/** Nav **/}
+      <Pane background="#999" padding={majorScale(2)}>
+        <Heading color="#EEE">The Hannah Arendt Index</Heading>
+      </Pane>
+
       {/** Header **/}
-      <Pane height="300px" display="flex" background="#CCC" marginBottom={majorScale(2)}>
-        <Pane margin="auto" display="flex" flexDirection="column" width="500px" alignItems="center">
+      <Pane flexShrink={0} flexGrow={0} height="300px" display="flex" background="#CCC" marginBottom={majorScale(2)} width="100%">
+        <Pane margin="auto" display="flex" flexDirection="column" width="600px" alignItems="center">
           <Pane border display="flex" marginBottom={majorScale(2)}>
             <Pane>
               <img width={"100px"} src={HannahArendtImage} />
             </Pane>
             <Pane marginLeft={majorScale(2)} display="flex" flexDirection={"column"} justifyContent="center">
-              <Heading margin={0} padding={0} size={900}>Hannah Arendt Index</Heading>
-              <Paragraph marginTop={majorScale(1)}>This tool allows you to search the entire work of Hannah Arendt's "The Human Condition". Use whitespace for multi-keyword searches.</Paragraph>
+              <Heading margin={0} padding={0} size={900}>The Human Condition Index</Heading>
+              <Paragraph marginTop={majorScale(1)}>This tool allows you to search the entire work of Hannah Arendt's <i>The Human Condition</i>. Use whitespace for multi-keyword searches.</Paragraph>
             </Pane>
           </Pane>
 
