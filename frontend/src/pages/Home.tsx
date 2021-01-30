@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Pane, SearchInput, Heading, majorScale, Button, Dialog, Paragraph } from 'evergreen-ui'
+import { Pane, SearchInput, Heading, majorScale, Button, Dialog, Paragraph, Text } from 'evergreen-ui'
 import Data from "../data/human-condition.json"
 import Highlighter from "react-highlight-words";
 import Fuse from "fuse.js"
 import "./Home.css"
 import HannahArendtImage from "../static/hannah-arendt.jpg"
 
-type SearchResult = Fuse.FuseResult<"">
+interface Reference {
+  text: string
+  pageNumber: number
+  chapter: string
+  section: string
+}
+
+type SearchResult = Fuse.FuseResult<Reference>
 
 export default () => {
   const [query, setQuery] = useState("")
@@ -31,7 +38,7 @@ export default () => {
   const handleSubmit = () => {
     const finalQuery = query.trim().split(" ").map(s => `'${s}`).join(" ")
     if (!hasSearched) setHasSearched(true)
-    setResults(fuse.search<"">(finalQuery))
+    setResults(fuse.search<Reference>(finalQuery))
   }
 
   const onDialogClose = () => {
@@ -49,14 +56,14 @@ export default () => {
 
   let selectedText = ""
   if (selected) {
-    selectedText = Data.slice(selected.refIndex - 2, selected.refIndex + 2).join("")
+    selectedText = Data.slice(selected.refIndex - 2, selected.refIndex + 2).map(d => d.text).join(" ")
   }
 
   return (
     <Pane display="flex" flexDirection="column">
       <Dialog hasFooter={false} hasHeader={false} isShown={modalShown} onCloseComplete={onDialogClose}>
         {selected &&
-          <Highlighter searchWords={[selected.item]} textToHighlight={selectedText} />}
+          <Highlighter searchWords={[selected.item.text]} textToHighlight={selectedText} />}
       </Dialog>
 
       {/** Header **/}
@@ -87,8 +94,13 @@ export default () => {
         }
         {results.map((r, i) => (
           <Pane elevation={0} hoverElevation={1} width={majorScale(64)} margin={majorScale(2)} key={`${r.refIndex}${i}`} onClick={() => setSelected(r)} className="Clickable">
-            <Pane padding={majorScale(2)}>
-              <Highlighter searchWords={queries} textToHighlight={r.item} />
+            <Pane>
+              <Pane borderBottom display="flex" justifyContent="space-between" paddingLeft={majorScale(2)} paddingRight={majorScale(2)}>
+                <Text>Page Number: {r.item.pageNumber}</Text> <Text>{r.item.chapter}</Text>
+              </Pane>
+              <Pane padding={majorScale(2)}>
+                <Highlighter searchWords={queries} textToHighlight={r.item.text} />
+              </Pane>
             </Pane>
           </Pane>
         ))}

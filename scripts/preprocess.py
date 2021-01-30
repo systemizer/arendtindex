@@ -2,22 +2,47 @@ import json
 
 
 def process_file():
+    sentences = []
     full_text = ""
+
+    page_number = 1
+    chapter = "Introduction"
+    section = ""
+    bufsentence = ""
+    
     for line in open("./data/human-condition.txt", "r"):
-        line = line.strip().rstrip()        
-        if line.startswith("["):
-            continue
-        if line == "The Human Condition":
-            continue
+        line = line.strip().rstrip()
         if not line:
             continue
 
-        full_text += " " + line
+        if line.startswith("[[["):
+            section = line.replace("[", "").replace("]", "")
+            continue
+        if line.startswith("[["):
+            chapter = line.replace("[", "").replace("]", "")
+            continue
+        if line.startswith("["):
+            page_number += 1
+            continue
 
-    full_text = full_text.replace("- ", "")
+        split = line.split(".")
+        if len(split) == 1:
+            bufsentence += " " + split[0]
+            continue
+        else:
+            for l in line.split(".")[:-1]:
+                sentences.append({
+                    "text": bufsentence + " " + l + ".",
+                    "chapter": chapter,
+                    "section": section,
+                    "pageNumber": page_number
+                })
+                bufsentence = ""
+            bufsentence = line.split(".")[-1]
 
+    for s in sentences:
+        s["text"] = s["text"].replace("- ", "").strip()
 
-    sentences = ["%s." % s for s in full_text.split(".") if s]
     # For JSON
     with open("./build/human-condition.json", "w") as f:
         json.dump(sentences, f)
