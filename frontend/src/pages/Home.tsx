@@ -65,7 +65,7 @@ export default () => {
 
   let selectedText = ""
   if (selected) {
-    selectedText = Data.slice(selected.refIndex - 2, selected.refIndex + 2).map(d => d.text).join(" ")
+    selectedText = Data.slice(selected.refIndex - 2, selected.refIndex + 4).map(d => d.text).join(" ")
   }
 
   return (
